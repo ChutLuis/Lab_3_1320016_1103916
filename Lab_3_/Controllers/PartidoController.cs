@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using Lab_3_.Models;
+using System.IO;
 
 namespace Lab_3_.Controllers
 {
@@ -12,10 +15,34 @@ namespace Lab_3_.Controllers
         // GET: /Partido/
         public ActionResult Index()
         {
-
             return View();
         }
+        [HttpPost]
+        public ActionResult Upload()
+        {
+            try
+            {
+                if (Request.Files.Count > 0)
+                {
+                    var file = Request.Files[0];
 
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileName = Path.GetFileName(file.FileName);
+                        var path = Path.Combine(Server.MapPath("~/App_Data/"), fileName);
+                        file.SaveAs(path);
+                        TempData["uploadResult"] = "Archivo subido con éxito";
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                TempData["uploadResult"] = "Error" + ex.Message;
+
+            }
+            return View("Index");
+        }
         //
         // GET: /Partido/Details/5
         public ActionResult Details(int id)

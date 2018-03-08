@@ -2,4 +2,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@using (Html.BeginForm("Upload", "Partido", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="FileUpload" />
+    <br />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
+    @Html.Label(TempData["uploadResult"].ToString())
+}
+<br />
+<h2>Contenido del árbol</h2>
+@Html.TextAreaFor(m => TempData["arbol"])
+<br />
